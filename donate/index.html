@@ -28,19 +28,19 @@ $<input type="text" value="10" size="5" id="amount">
       return;
     }
     if (amount >= 100) {
-      items.push({sku: 'sku_F0zQV62jLbEeRH', quantity: amount / 100});
+      items.push({sku: 'sku_F0zQV62jLbEeRH', quantity: Math.floor(amount / 100)});
       amount = amount % 100;
     }
     if (amount >= 50) {
-      items.push({sku: 'sku_F0zPniKU3KZs9r', quantity: amount / 50});
+      items.push({sku: 'sku_F0zPniKU3KZs9r', quantity: Math.floor(amount / 50)});
       amount = amount % 50;
     }
     if (amount >= 20) {
-      items.push({sku: 'sku_F0zPwKGbjFlz9v', quantity: amount / 20});
+      items.push({sku: 'sku_F0zPwKGbjFlz9v', quantity: Math.floor(amount / 20)});
       amount = amount % 20;
     }
     if (amount >= 10) {
-      items.push({sku: 'sku_F0zPEqCLq5vAQz', quantity: amount / 10});
+      items.push({sku: 'sku_F0zPEqCLq5vAQz', quantity: Math.floor(amount / 10)});
       amount = amount % 10;
     }
     if (amount >= 1) {
