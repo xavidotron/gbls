@@ -2,37 +2,14 @@
 <script src="https://js.stripe.com/v3"></script>
 
 <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+$<input type="text" value="10" size="5" id="amount">
 <button
   class="stripe"
   style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-  id="checkout-button-sku_F0zPEqCLq5vAQz"
+  id="checkout-button"
   role="link"
 >
-  Donate $10
-</button>
-<button
-  class="stripe"
-  style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-  id="checkout-button-sku_F0zPwKGbjFlz9v"
-  role="link"
->
-  Donate $20
-</button>
-<button
-  class="stripe"
-  style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-  id="checkout-button-sku_F0zPniKU3KZs9r"
-  role="link"
->
-  Donate $50
-</button>
-<button
-  class="stripe"
-  style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-  id="checkout-button-sku_F0zQV62jLbEeRH"
-  role="link"
->
-  Donate $100
+  Donate
 </button>
 
 <div id="error-message"></div>
@@ -40,29 +17,53 @@
 <script>
   var stripe = Stripe('pk_live_nvh7rXcPImnUi6Jz9C60fnMc00D1P8Xo8m');
 
-  var checkoutButtons = document.getElementsByClassName('stripe');
-  for (var i = 0; i < checkoutButtons.length; ++i) {
-    var checkoutButton = checkoutButtons[i];
-    checkoutButton.addEventListener('click', function (event) {
-      // When the customer clicks on the button, redirect
-      // them to Checkout.
-      stripe.redirectToCheckout({
-        items: [{sku: 'sku_' + event.currentTarget.id.split('_')[1], quantity: 1}],
+  var checkoutButton = document.getElementById('checkout-button');
+  checkoutButton.addEventListener('click', function (event) {
+    // When the customer clicks on the button, redirect
+    // them to Checkout.
+    var items = [];
+    var amount = parseInt(document.getElementById('amount').value);
+    if (isNaN(amount)) {
+      document.getElementById('error-message').textContent = "Please enter a valid integer.";
+      return;
+    }
+    if (amount >= 100) {
+      items.append({sku: 'sku_F0zQV62jLbEeRH', quantity: amount / 100});
+      amount = amount % 100;
+    }
+    if (amount >= 50) {
+      items.append({sku: 'sku_F0zPniKU3KZs9r', quantity: amount / 50});
+      amount = amount % 50;
+    }
+    if (amount >= 20) {
+      items.append({sku: 'sku_F0zPwKGbjFlz9v', quantity: amount / 20});
+      amount = amount % 20;
+    }
+    if (amount >= 10) {
+      items.append({sku: 'sku_F0zPEqCLq5vAQz', quantity: amount / 10});
+      amount = amount % 10;
+    }
+    if (amount >= 1) {
+      items.append({sku: 'sku_F0zf4w5m1Lx4mp', quantity: amount});
+      amount = 0;
+    }
+    
+    stripe.redirectToCheckout({
+      items: items,
 
-        // Note that it is not guaranteed your customers will be redirected to this
-        // URL *100%* of the time, it's possible that they could e.g. close the
-        // tab between form submission and the redirect.
-        successUrl: 'https://www.querki.net/u/.2r/gbls/#!Thank-You',
-        cancelUrl: 'https://www.querki.net/u/.2r/gbls/#!Donate',
-      })
-      .then(function (result) {
-        if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-          var displayError = document.getElementById('error-message');
-          displayError.textContent = result.error.message;
-        }
-      });
+      // Note that it is not guaranteed your customers will be redirected to this
+      // URL *100%* of the time, it's possible that they could e.g. close the
+      // tab between form submission and the redirect.
+      successUrl: 'https://www.querki.net/u/.2r/gbls/#!Thank-You',
+      cancelUrl: 'https://www.querki.net/u/.2r/gbls/#!Donate',
+    })
+    .then(function (result) {
+      if (result.error) {
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer.
+        var displayError = document.getElementById('error-message');
+        displayError.textContent = result.error.message;
+      }
     });
-  }
+  });
 </script>
