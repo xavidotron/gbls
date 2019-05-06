@@ -3,11 +3,20 @@
 
 <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
 <button
+  class="stripe"
   style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-  id="checkout-button-sku_F0bo5NWn7TJd69"
+  id="checkout-button-sku_F0zPEqCLq5vAQz"
   role="link"
 >
-  Checkout
+  Donate $10
+</button>
+<button
+  class="stripe"
+  style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+  id="checkout-button-sku_F0zPwKGbjFlz9v"
+  role="link"
+>
+  Donate $20
 </button>
 
 <div id="error-message"></div>
@@ -15,26 +24,29 @@
 <script>
   var stripe = Stripe('pk_live_nvh7rXcPImnUi6Jz9C60fnMc00D1P8Xo8m');
 
-  var checkoutButton = document.getElementById('checkout-button-sku_F0bo5NWn7TJd69');
-  checkoutButton.addEventListener('click', function () {
-    // When the customer clicks on the button, redirect
-    // them to Checkout.
-    stripe.redirectToCheckout({
-      items: [{sku: 'sku_F0bo5NWn7TJd69', quantity: 1}],
+  var checkoutButtons = document.getElementsByClassName('stripe');
+  for (var i = 0; i < checkoutButtons.length; ++i) {
+    var checkoutButton = checkoutButtons[i];
+    checkoutButton.addEventListener('click', function (event) {
+      // When the customer clicks on the button, redirect
+      // them to Checkout.
+      stripe.redirectToCheckout({
+        items: [{sku: 'sku_' + e.currentTarget.id.split('_')[1], quantity: 1}],
 
-      // Note that it is not guaranteed your customers will be redirected to this
-      // URL *100%* of the time, it's possible that they could e.g. close the
-      // tab between form submission and the redirect.
-      successUrl: 'https://www.querki.net/u/.2r/gbls/#!Thank-You',
-      cancelUrl: 'https://www.querki.net/u/.2r/gbls/#!Donate',
-    })
-    .then(function (result) {
-      if (result.error) {
-        // If `redirectToCheckout` fails due to a browser or network
-        // error, display the localized error message to your customer.
-        var displayError = document.getElementById('error-message');
-        displayError.textContent = result.error.message;
-      }
+        // Note that it is not guaranteed your customers will be redirected to this
+        // URL *100%* of the time, it's possible that they could e.g. close the
+        // tab between form submission and the redirect.
+        successUrl: 'https://www.querki.net/u/.2r/gbls/#!Thank-You',
+        cancelUrl: 'https://www.querki.net/u/.2r/gbls/#!Donate',
+      })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+          var displayError = document.getElementById('error-message');
+          displayError.textContent = result.error.message;
+        }
+      });
     });
-  });
+  }
 </script>
