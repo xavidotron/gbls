@@ -1,7 +1,37 @@
+<html>
+<head>
+<title>Donate</title>
+<style type="text/css">
+  .content {
+    max-width: 1000px;
+    margin: auto;
+    float: none;
+  }
+  .titleimg {
+    display: block;
+    width: 100%;
+  }
+</style>
 <!-- Load Stripe.js on your website. -->
 <script src="https://js.stripe.com/v3"></script>
+</head>
+<body>
+<div class="content">
+  <a href="https://greaterbostonlarpsociety.org/"><img class="titleimg" src="https://s3-us-west-2.amazonaws.com/querki/9v5kc4s/a9ca88289e49a144caf077f749b919ab5f9a1eae.png" alt="Greater Boston LARP Society" /></a>
 
-<!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+  <h1>Donate</h1>
+  
+  <p>Donations enable us to cover our expensive and run bigger events in more interesting spaces. Help make future LARPs happen!</p>
+
+  <h2>Donate by Check</h2>
+
+  <p>Make out a check to "Greater Boston LARP Society, Inc." and mail it to: Greater Boston LARP Society, 32 Burnham St., Somerville MA 02144.</p>
+
+  <h2>Donate by Credit Card</h2>
+
+  <p>We accept donations via Stripe; there is a fee to us of 2.2% + $0.30 (3.5% for American Express cards).</p>
+  
+  <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
 $<input type="text" value="10" size="5" id="amount">
 <button
   class="stripe"
@@ -55,7 +85,7 @@ $<input type="text" value="10" size="5" id="amount">
       // URL *100%* of the time, it's possible that they could e.g. close the
       // tab between form submission and the redirect.
       successUrl: 'https://www.querki.net/u/.2r/gbls/#!Thank-You',
-      cancelUrl: 'https://www.querki.net/u/.2r/gbls/#!Donate',
+      cancelUrl: 'https://static.greaterbostonlarpsociety.org/donate/',
     })
     .then(function (result) {
       if (result.error) {
@@ -67,3 +97,11 @@ $<input type="text" value="10" size="5" id="amount">
     });
   });
 </script>
+  
+  <h2>Donate Cash</h2>
+  
+  <p>We accept cash donations at our events. We generally suggest a $10 donation per event, but more is always appreciated.</p>
+
+</div>
+</body>
+</html>
